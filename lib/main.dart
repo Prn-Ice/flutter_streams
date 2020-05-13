@@ -33,8 +33,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  StreamController<int> streamController = StreamController<int>.broadcast();
+  StreamController<int> streamController = StreamController<int>();
   StreamSubscription streamSubscription;
+  TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +44,16 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter value to emit',
+                ),
+                controller: _controller,
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -59,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 MaterialButton(
                   onPressed: () {
-                    streamController.add(1);
+                    streamController.add(int.tryParse(_controller.text));
                   },
                   child: Text('Emit Value'),
                   color: Colors.lightBlueAccent,
